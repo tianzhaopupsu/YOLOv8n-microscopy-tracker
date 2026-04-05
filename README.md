@@ -1,3 +1,13 @@
+### YOLO Particle Tracking Simulation
+
+This repository generates synthetic microscopy images of particles near irregular membranes and trains a YOLOv8 model to detect them.
+
+## Setup
+
+```bash
+pip install ultralytics noise numpy opencv-python matplotlib scipy
+
+
 ### YOLOv8 Particle Tracking Results
 
 Our YOLOv8 model (73 layers, 3M parameters, 8.1 GFLOPs) was trained to detect and classify particles in synthetic microscopy images as either **near the membrane (Ne)** or **far from the membrane (Fa)**.  
