@@ -22,12 +22,6 @@ This repository generates synthetic microscopy images and videos of particles ne
 
 ## Workflow Overview
 
-```mermaid
-flowchart LR
-    A[Generate Synthetic Dataset] --> B[Train YOLOv8 Model]
-    B --> C[Validate Model Performance]
-    C --> D[Visualize Predictions on Videos]
-    D --> E[Real-time Microscope Control Simulation]
 Features
 Synthetic dataset generation: Images with particles diffusing near irregular cell membranes.
 Video generation: Movies showing particle dynamics with realistic astigmatic PSFs and camera noise.
