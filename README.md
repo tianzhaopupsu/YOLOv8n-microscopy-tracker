@@ -13,36 +13,29 @@ flowchart LR
     C --> D[Visualize Predictions on Videos]
     D --> E[Real-time Microscope Control Simulation]
 ```
-Features
-Synthetic dataset generation: Images with particles dif# YOLO Particle Tracking Simulation
-
-This repository generates synthetic microscopy images and videos of particles near irregular membranes and trains a YOLOv8 model to detect and classify them in real time.
-
----
-
-## Workflow Overview
-
-Features
-Synthetic dataset generation: Images with particles diffusing near irregular cell membranes.
-Video generation: Movies showing particle dynamics with realistic astigmatic PSFs and camera noise.
-YOLOv8 training: Detects particles as either near the membrane (Ne) or far from the membrane (Fa).
-Visualization: Annotates videos using trained YOLOv8 weights.
-Reproducible workflow: All steps can be run locally or in Google Colab.
-Setup
+## Features
+*   **Synthetic dataset generation:** Images with particles diffusing near irregular cell membranes.
+*   **Video generation:** Movies showing particle dynamics with realistic astigmatic PSFs and camera noise.
+*   **YOLOv8 training:** Detects particles as either near the membrane (Ne) or far from the membrane (Fa).
+*   **Visualization:** Annotates videos using trained YOLOv8 weights.
+*   **Reproducible workflow:** All steps can be run locally or in Google Colab.
+## Setup
 
 Install dependencies:
-
+```batch
 pip install ultralytics noise numpy opencv-python matplotlib scipy imageio
-Dataset Generation
-Generates synthetic microscopy images of particles near irregular membranes.
-Implements XY/Z diffusion and membrane repulsion (anti-jitter) for realistic particle motion.
-Generates YOLOv8 labels automatically (Ne vs Fa).
-Includes Poisson camera noise and Gaussian smoothing to simulate realistic imaging conditions.
-Example Code
+```
+## Dataset Generation
+* Generates synthetic microscopy images of particles near irregular membranes.
+* Implements XY/Z diffusion and membrane repulsion (anti-jitter) for realistic particle motion.
+* Generates YOLOv8 labels automatically (Ne vs Fa).
+* Includes Poisson camera noise and Gaussian smoothing to simulate realistic imaging conditions.
+## Example Code
+```python
 from ultralytics import YOLO
 import numpy as np
 # Load or generate dataset as shown in dataset scripts
-
+```
 Dataset folder structure:
 
 ```
@@ -55,13 +48,14 @@ dataset/
 │   └── val/
 └── dataset.yaml
 ```
-YOLOv8 Training
-Model: YOLOv8n (73 layers, 3M parameters, 8.1 GFLOPs)
-Classes:
-0: Fa (far from membrane)
-1: Ne (near membrane)
-Training on synthetic dataset with epochs=100, batch=16, image size=512.
-Saves weights every 5 epochs in runs/run1/weights/.
+## YOLOv8 Training
+* Model: YOLOv8n (73 layers, 3M parameters, 8.1 GFLOPs)
+*   **Classes:**
+    *   0: Fa (far from membrane)
+    *   1: Ne (near membrane)
+*   Training on synthetic dataset with `epochs=100`, `batch=16`, `image size=512`.
+*   Saves weights every 5 epochs in `runs/run1/weights/`.
+```python
 from ultralytics import YOLO
 
 model = YOLO("yolov8n.pt")
@@ -75,6 +69,7 @@ model.train(
     name="run1",
     device=0
 )
+```
 ### YOLOv8 Particle Tracking Results
 
 Our YOLOv8 model (73 layers, 3M parameters, 8.1 GFLOPs) was trained to detect and classify particles in synthetic microscopy images as either **near the membrane (Ne)** or **far from the membrane (Fa)**.  
@@ -93,11 +88,12 @@ Our YOLOv8 model (73 layers, 3M parameters, 8.1 GFLOPs) was trained to detect an
 - Overall, the model achieves **high precision and recall across both classes**, demonstrating effective particle detection for real-time microscope control.
 
 💡 **Note:** Metrics are calculated on a small validation set; performance can be further improved with larger datasets and enhanced PSF handling at image edges.
-Video Generation and Visualization
-Generates synthetic videos of particle motion with astigmatic PSFs and camera noise.
-Uses trained YOLOv8 weights to annotate particles in videos.
-Provides realtime display and saves annotated videos for analysis.
-Example Video Annotation Code
+## Video Generation and Visualization
+* Generates synthetic videos of particle motion with astigmatic PSFs and camera noise.
+* Uses trained YOLOv8 weights to annotate particles in videos.
+* Provides realtime display and saves annotated videos for analysis.
+## Example Video Annotation Code
+```python
 from ultralytics import YOLO
 import cv2
 import torch
@@ -114,19 +110,9 @@ for _ in range(int(cap.get(cv2.CAP_PROP_FRAME_COUNT))):
     results = model(frame, device=0, conf=0.25)
     annotated = results[0].plot(conf=False, line_width=1, font_size=0.6)
     out.write(cv2.cvtColor(annotated, cv2.COLOR_RGB2BGR))
-References
-Ultralytics YOLOv8 Documentation
-Synthetic particle tracking literature on microscopy simulations.
-Astigmatic PSF modeling for particle detection.
-License
+```
 
-MIT License.fusing near irregular cell membranes.
-Video generation: Movies showing particle dynamics with realistic astigmatic PSFs and camera noise.
-YOLOv8 training: Detects particles as either near the membrane (Ne) or far from the membrane (Fa).
-Visualization: Annotates videos using trained YOLOv8 weights.
-Reproducible workflow: All steps can be run locally or in Google Colab.
+## License
 
-Setup
+MIT License.
 
-Install dependencies:
-pip install ultralytics noise numpy opencv-python matplotlib scipy imageio
